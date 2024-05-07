@@ -1,11 +1,11 @@
 public class Vote
 {
-    private long voterID;
+    private final long voterID;
     private int voteOption;
 
     public Vote()
     {
-
+        voterID = 0;
     }
 
     public Vote(long voterID, int voteOption)
@@ -19,11 +19,6 @@ public class Vote
         return voterID;
     }
 
-    public void setVoterID(long voterID)
-    {
-        this.voterID = voterID;
-    }
-
     public int getVoteOption()
     {
         return voteOption;
@@ -34,12 +29,10 @@ public class Vote
         this.voteOption = voteOption;
     }
 
+
     @Override
     public String toString()
     {
-        return "Vote{" +
-                "voterID=" + voterID +
-                ", voteOption='" + voteOption + '\'' +
-                '}';
+        return "Vote{" + "voterID=" + voterID + ", voteOption='" + voteOption + '}';
     }
 }
