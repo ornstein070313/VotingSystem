@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.HashMap;
 import java.math.BigInteger;
 import java.util.Map;
@@ -29,6 +30,94 @@ public class OptionManager
 //            System.out.println("Error. No options exist in the set.");
 //        }
 //    }
+
+
+    public Participant[] readOptions(String filePath)
+    {
+        BufferedReader reader = null;
+        String line;
+        int count = 0;
+        int index = 0;
+        Participant[] arr = null;
+
+        try
+        {
+            reader = new BufferedReader(new FileReader(filePath));
+            Participant p = null;
+
+            while ((line = reader.readLine()) != null)
+            {
+                count++;
+            }
+
+            reader.close();
+            arr = new Participant[count];
+
+            reader = new BufferedReader(new FileReader(filePath));
+
+            while ((line = reader.readLine()) != null)
+            {
+                p = new Participant();
+                String[] property = line.split(",");
+                p.setName(property[0]);
+                p.setParty(property[1]);
+                p.setSign(property[2]);
+
+                addOption(p);
+                arr[index] = p;
+                index++;
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                reader.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return arr;
+    }
+
+    public void writeResults(String filepath)
+    {
+        File f = new File(filepath);
+        String s = f.getName();
+        String s1 = s.replace(".","-result.");
+        String s2 = filepath.replace(s,s1);
+
+        Participant participant = null;
+        try (FileWriter writer = new FileWriter(s2))
+        {
+            // Write header
+            writer.append("Participant Name,Sign,Party,Vote Option\n");
+
+            // Write each participant's information along with their selected vote option
+            if (!Constants.voteCount.isEmpty())
+            {
+                for (Map.Entry<VoteOption, BigInteger> entry : Constants.voteCount.entrySet())
+                {
+                    participant =(Participant) entry.getKey();
+                    writer.append(participant.getName()).append(',')
+                            .append(participant.getSign()).append(',')
+                            .append(participant.getParty()).append(',')
+                            .append(String.valueOf(entry.getValue()))
+                            .append("\n");
+                }
+            }
+
+            writer.flush();
+            System.out.println("Results written successfully to " + s2);
+        } catch (IOException e)
+        {
+            System.err.println("Error writing results to " + s2 + ": " + e.getMessage());
+        }
+    }
 
 
     public HashMap<VoteOption, BigInteger> getVoteCount()

@@ -3,7 +3,6 @@ import java.util.Objects;
 public class VoteOption
 {
     private String name;
-    private String optionID;
 
     public VoteOption(String name)
     {
@@ -28,18 +27,10 @@ public class VoteOption
     @Override
     public String toString()
     {
-        return "VoteOption{" + "name='" + name + '\'' + ", optionID=" + optionID + '}';
+        return "VoteOption{" + "name='" + name + '}';
     }
 
-    public String getOptionID()
-    {
-        return optionID;
-    }
 
-    public void setOptionID(String optionID)
-    {
-        this.optionID = optionID;
-    }
 
     @Override
     public boolean equals(Object o)
@@ -52,8 +43,8 @@ public class VoteOption
     }
 
     @Override
-    public int hashCode()
+    public int hashCode() //TODO implement hashcode properly.
     {
-        return Objects.hash(name, optionID);
+        return Objects.hash(name.toLowerCase());
     }
 }

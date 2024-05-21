@@ -1,98 +1,51 @@
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Scanner;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main
+{
+    public static void main(String[] args)
+    {
+        VoterManager vm1 = new VoterManager();
+        OptionManager om1 = new OptionManager();
 
-        Participant candidate1 = new Participant("Candidate 1", "A", "Party 1");
-        Participant candidate2 = new Participant("Candidate 2", "B", "Party 2");
+        Participant[] list = om1.readOptions("D:\\VoteDemo\\src\\Detail.csv");
 
-        // Create OptionManager and add candidates
-        OptionManager optionManager = new OptionManager();
-        optionManager.addOption(candidate1);
-        optionManager.addOption(candidate2);
+        long voterId;
+        int option;
 
-        // Create VoterManager
-        VoterManager voterManager = new VoterManager();
+        int numOptions = list.length;
+        Instant start = Instant.now();
+        Duration duration = Duration.ofSeconds(10);
 
-        // Simulate voters casting their votes
-        long voter1ID = 1001;
-        long voter2ID = 1002;
+        // Simulating the election process
+        while (Duration.between(start, Instant.now()).toMillis() <= duration.toMillis())
+        {
+            System.out.println("Hello! ");
+            System.out.println("Enter your voter id: ");
+            voterId = (int) (Math.random() * 100) + 1;
 
-        voterManager.addVoter(voter1ID, candidate1); // Voter 1 votes for Candidate 1
-        voterManager.addVoter(voter2ID, candidate2); // Voter 2 votes for Candidate 2
+            System.out.println("Enter option number: ");
+            option = (int) (Math.random() * numOptions);
 
-        // Show vote counts
-        optionManager.showVotes();
+            vm1.addVoter(voterId, list[option]);
 
-        // Remove a voter
-        voterManager.removeVoter(voter1ID);
+            System.out.println("Voter ID: " + voterId + "\n");
+            System.out.println("Thank you for voting!");
 
-        // Show updated vote counts
-        optionManager.showVotes();
+            try
+            {
+                // Simulate a delay for each vote
+                Thread.sleep(200);
+            } catch (InterruptedException e)
+            {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+
+        vm1.printVoters();
+        om1.showVotes();
+        om1.writeResults("D:\\VoteDemo\\src\\Detail.csv");
+        vm1.writeVoters("D:\\VoteDemo\\src\\Voters.csv");
     }
-
-//        VoterManager vm1 = new VoterManager();
-//        OptionManager om1 = new OptionManager();
-//
-//        Participant p1 = new Participant("Rahul", "hand", "congress");
-//        Participant p2 = new Participant("Modi", "star", "bjp");
-//
-//        om1.addOption(p1);
-//        om1.addOption(p2);
-//
-//        long voterId;
-//        int option;
-//        int[] arr = new int[2];
-//        int i = 0;
-//        int numOptions = 2;
-//        Instant start = Instant.now();
-//        Duration duration = Duration.ofSeconds(50);
-//        Vote[] votes = new Vote[100]; // Assuming a maximum of 100 votes
-//
-//        // Simulating the election process
-//        while (Duration.between(start, Instant.now()).toMillis() <= duration.toMillis()) {
-//            System.out.println("Hello! ");
-//            System.out.println("Enter your voter id: ");
-//            voterId = (long) (Math.random() * 100) + 1;
-//
-//            System.out.println("Enter option number: ");
-//            option = (int) (Math.random() * 2) + 1;
-//
-//            votes[i] = new Vote(voterId, option);
-//
-//            System.out.println("Voter ID: " + voterId + "\n" + "Option: " + option);
-//            System.out.println("Thank you for voting!");
-//
-//            i++;
-//
-//            try {
-//                // Simulate a delay for each vote
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//                return;
-//            }
-//        }
-//
-//        // Counting votes
-//        for (int z = 0; z < i; z++) {
-//            if (votes[z].getVoteOption() == 1) {
-//                arr[0]++;
-//            } else if (votes[z].getVoteOption() == 2) {
-//                arr[1]++;
-//            }
-//        }
-//
-//        // Displaying total votes for each option
-//        System.out.println("Total votes for option 1: " + arr[0]);
-//        System.out.println("Total votes for option 2: " + arr[1]);
-//
-//        // Displaying individual votes
-//        System.out.println("Individual votes:");
-//        for (int z = 0; z < i; z++) {
-//            System.out.println(votes[z]);
-//        }
-    }
-
+}
