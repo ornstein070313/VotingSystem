@@ -5,52 +5,87 @@ public class FileHandler
     private String fileName;
     private String filePath;
 
-    public void createFile(String name)
+    public FileHandler(String fileName, String filePath)
     {
-        File myFile = new File(name);
+        this.fileName = fileName;
+        this.filePath = filePath;
+    }
+
+
+    public FileHandler(String fileName)
+    {
+        this.fileName = fileName;
+
+    }
+
+    public void createFile(String fileName)
+    {
+        File myFile = new File(fileName);
 
         try
         {
-            if(myFile.createNewFile())
+            if (myFile.createNewFile())
             {
                 System.out.println("File created successfully");
             }
 
-        }
-        catch(IOException e)
+        } catch (IOException e)
         {
             System.err.println(e.getMessage());
             System.out.println("Please try again with a different file name");
         }
-
     }
 
-    public void writeToFile(String s)
+    public void createFile()
     {
-        try (FileWriter myWriter = new FileWriter(fileName, true);
-             BufferedWriter bufferedWriter = new BufferedWriter(myWriter))
+        File myFile = new File(filePath, fileName);
+
+        try
         {
-            bufferedWriter.write(s);
+            if (myFile.createNewFile())
+            {
+                System.out.println("File created successfully");
+            }
+
         } catch (IOException e)
         {
-            System.out.println("An error occurred.");
+            System.err.println(e.getMessage());
+            System.out.println("Please try again with a different file name");
+        }
+    }
+
+    public void writeToFile(String data)
+    {
+        try (FileWriter writer = new FileWriter(new File(filePath, fileName), true);
+             BufferedWriter bufferedWriter = new BufferedWriter(writer))
+        {
+            bufferedWriter.write(data);
+            bufferedWriter.newLine();
+        } catch (IOException e)
+        {
+            System.out.println("An error occurred while writing to file.");
             e.printStackTrace();
         }
     }
 
-    public void readFromFile()
+    public boolean checkCredentials(String username, String password)
     {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName)))
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File(filePath, fileName))))
         {
             String line;
             while ((line = reader.readLine()) != null)
             {
-                System.out.println(line);
+                String[] parts = line.split(",");
+                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password))
+                {
+                    return true;
+                }
             }
         } catch (IOException e)
         {
-            System.out.println("error");
+            System.out.println("An error occurred while reading from file.");
             e.printStackTrace();
         }
+        return false;
     }
 }

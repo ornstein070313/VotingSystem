@@ -31,7 +31,6 @@ public class VoteOption
     }
 
 
-
     @Override
     public boolean equals(Object o)
     {
@@ -43,7 +42,7 @@ public class VoteOption
     }
 
     @Override
-    public int hashCode() //TODO implement hashcode properly.
+    public int hashCode()
     {
         return Objects.hash(name.toLowerCase());
     }

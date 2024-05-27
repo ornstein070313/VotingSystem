@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VoteDemo:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VoteDemo_jar</output-path>
+    <root id="archive" name="VoteDemo.jar">
+      <element id="module-output" name="VoteDemo" />
+    </root>
+  </artifact>
+</component>

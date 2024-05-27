@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class VoterManager
 {
-    //private HashMap<Long, Integer> voterIds;
 
     public VoterManager()
     {
@@ -18,7 +17,7 @@ public class VoterManager
         return Constants.voterIds;
     }
 
-    public boolean hasVoted(Long voterId) // TODO implement logic to handle those who cannot vote(dead/banned). using enums
+    public boolean hasVoted(Long voterId)
     {
         if (Constants.voterIds.containsKey(voterId))
         {
@@ -28,7 +27,7 @@ public class VoterManager
             return false;
     }
 
-    public void addVoter(Long voterId, VoteOption option) //TODO implement logic to handle array options not objects. Also join csv with it.
+    public void addVoter(Long voterId, VoteOption option)
     {
         if (hasVoted(voterId))
         {
@@ -36,7 +35,7 @@ public class VoterManager
         }
         else
         {
-            if(addVote(option))
+            if (addVote(option))
             {
                 Constants.voterIds.put(voterId, 1);
                 System.out.println("Successfully added.");
@@ -74,19 +73,17 @@ public class VoterManager
         Constants.voterIds.forEach((key, value) -> System.out.println(key + " + " + value));
     }
 
-    public void writeVoters(String filepath) //TODO add writevoters functions
+    public void writeVoters(String filepath)
     {
         File f = new File(filepath);
         String s = f.getName();
-        String s1 = s.replace(".","-voterResult.");
-        String s2 = filepath.replace(s,s1);
+        String s1 = s.replace(".", "-voterResult.");
+        String s2 = filepath.replace(s, s1);
         long voterId;
         try (FileWriter writer = new FileWriter(s2))
         {
-            // Write header
             writer.append("VoterID, HasVoted\n");
 
-            // Write each participant's information along with their selected vote option
             if (!Constants.voteCount.isEmpty())
             {
                 for (Map.Entry<Long, Integer> entry : Constants.voterIds.entrySet())
@@ -105,6 +102,7 @@ public class VoterManager
             System.err.println("Error writing results to " + s2 + ": " + e.getMessage());
         }
     }
+
     public void readVoters(String filePath)
     {
         BufferedReader reader = null;
@@ -114,23 +112,20 @@ public class VoterManager
         {
             reader = new BufferedReader(new FileReader(filePath));
             Vote v = null;
-            while((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null)
             {
-                 //// TODO implement logic to handle those who cannot vote(dead/banned). using enums
-                Constants.voterIds.put(Long.parseLong(line), 1);
+                Constants.voterIds.put(Long.parseLong(line), 0);
+                System.out.println(line + " added");
             }
-        }
-        catch(IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
-        }
-        finally
+        } finally
         {
             try
             {
                 reader.close();
-            }
-            catch(IOException e)
+            } catch (IOException e)
             {
                 e.printStackTrace();
             }

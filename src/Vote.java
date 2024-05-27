@@ -1,4 +1,4 @@
-public class Vote //TODO change Vote to Voter.
+public class Vote
 {
     private long voterID;
 

@@ -54,7 +54,7 @@ public class Participant extends VoteOption
     }
 
     @Override
-    public int hashCode() ////TODO implement hashcode properly.
+    public int hashCode()
     {
         return Objects.hash(super.hashCode(), sign.toLowerCase(), party.toLowerCase());
     }

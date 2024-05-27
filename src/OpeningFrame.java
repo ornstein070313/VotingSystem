@@ -3,15 +3,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class OpeningFrame extends JFrame {
+public class OpeningFrame extends JFrame
+{
 
-    public OpeningFrame() {
+    private FileHandler fileHandler;
+
+    public OpeningFrame()
+    {
         setTitle("Welcome");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Create the main panel
+        fileHandler = new FileHandler("usercred.txt");
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -25,20 +30,29 @@ public class OpeningFrame extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(welcomeLabel, gbc);
 
-        // Create "Sign Up" and "Log In" buttons
         JButton signUpButton = new JButton("Sign Up");
         JButton loginButton = new JButton("Log In");
 
-        // Add action listener to the "Log In" button
-        loginButton.addActionListener(new ActionListener() {
+        loginButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                new LoginFrame();
-                dispose(); // Close the main frame
+            public void actionPerformed(ActionEvent e)
+            {
+                new LoginFrame(fileHandler);
+                dispose();
             }
         });
 
-        // Add buttons to the panel
+        signUpButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                new SignUpFrame(fileHandler);
+                dispose();
+            }
+        });
+
         gbc.gridwidth = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -48,19 +62,20 @@ public class OpeningFrame extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(loginButton, gbc);
 
-        // Add padding
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Add panel to the frame
         add(panel, BorderLayout.CENTER);
 
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+    public static void main(String[] args)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 new OpeningFrame();
             }
         });

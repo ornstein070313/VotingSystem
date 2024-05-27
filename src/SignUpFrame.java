@@ -3,16 +3,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginFrame extends JFrame
+public class SignUpFrame extends JFrame
 {
 
     private FileHandler fileHandler;
 
-    public LoginFrame(FileHandler fileHandler)
+    public SignUpFrame(FileHandler fileHandler)
     {
         this.fileHandler = fileHandler;
 
-        setTitle("Login");
+        setTitle("Sign Up");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -22,7 +22,7 @@ public class LoginFrame extends JFrame
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel scenetitle = new JLabel("Log in to your account");
+        JLabel scenetitle = new JLabel("Sign up to create an account");
         scenetitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -50,7 +50,7 @@ public class LoginFrame extends JFrame
         gbc.gridy = 2;
         panel.add(pwBox, gbc);
 
-        JButton btn = new JButton("Log in");
+        JButton btn = new JButton("Sign Up");
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.LINE_END;
@@ -68,7 +68,7 @@ public class LoginFrame extends JFrame
 
                 if (username.isEmpty() || password.length == 0)
                 {
-                    JOptionPane.showMessageDialog(LoginFrame.this,
+                    JOptionPane.showMessageDialog(SignUpFrame.this,
                             "Username and password cannot be empty.",
                             "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -76,30 +76,19 @@ public class LoginFrame extends JFrame
 
                 String passwordString = new String(password);
 
-                if (checkCredentials(username, passwordString))
-                {
-                    JOptionPane.showMessageDialog(LoginFrame.this,
-                            "Login successful. Welcome, " + username + "!",
-                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                String userData = username + "," + passwordString;
+                fileHandler.writeToFile(userData);
 
-                    new EnvironmentGUI();
+                JOptionPane.showMessageDialog(SignUpFrame.this,
+                        "Sign up successful. You can now log in.",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                    dispose();
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(LoginFrame.this,
-                            "Invalid username or password.",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                new LoginFrame(fileHandler);
+
+                dispose();
             }
         });
 
         setVisible(true);
-    }
-
-    private boolean checkCredentials(String username, String password)
-    {
-        return fileHandler.checkCredentials(username, password);
     }
 }

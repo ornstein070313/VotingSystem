@@ -5,32 +5,12 @@ import java.util.Map;
 
 public class OptionManager
 {
-    //private HashSet<VoteOption> Constants.voteCount;
-    //private HashMap<VoteOption, BigInteger> Constants.voteCount;
+    Participant[] list = null;
+
     public OptionManager()
     {
 
     }
-
-//    public void populateVoteCount()
-//    {
-//        if (!Constants.voteCount.isEmpty())
-//        {
-//            Iterator<VoteOption> iter = Constants.voteCount.iterator();
-//
-//            while (iter.hasNext())
-//            {
-//                VoteOption obj = iter.next();
-//
-//                Constants.voteCount.put(obj.getOptionID(), BigInteger.valueOf(0));
-//            }
-//        }
-//        else
-//        {
-//            System.out.println("Error. No options exist in the set.");
-//        }
-//    }
-
 
     public Participant[] readOptions(String filePath)
     {
@@ -81,6 +61,7 @@ public class OptionManager
             }
 
         }
+        this.list = arr;
         return arr;
     }
 
@@ -88,21 +69,19 @@ public class OptionManager
     {
         File f = new File(filepath);
         String s = f.getName();
-        String s1 = s.replace(".","-result.");
-        String s2 = filepath.replace(s,s1);
+        String s1 = s.replace(".", "-result.");
+        String s2 = filepath.replace(s, s1);
 
         Participant participant = null;
         try (FileWriter writer = new FileWriter(s2))
         {
-            // Write header
             writer.append("Participant Name,Sign,Party,Vote Option\n");
 
-            // Write each participant's information along with their selected vote option
             if (!Constants.voteCount.isEmpty())
             {
                 for (Map.Entry<VoteOption, BigInteger> entry : Constants.voteCount.entrySet())
                 {
-                    participant =(Participant) entry.getKey();
+                    participant = (Participant) entry.getKey();
                     writer.append(participant.getName()).append(',')
                             .append(participant.getSign()).append(',')
                             .append(participant.getParty()).append(',')
@@ -177,4 +156,6 @@ public class OptionManager
                 ", Constants.voteCount=" + Constants.voteCount +
                 '}';
     }
+
+
 }
